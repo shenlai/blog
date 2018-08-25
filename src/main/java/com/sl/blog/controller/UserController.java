@@ -3,6 +3,7 @@ package com.sl.blog.controller;
 
 import com.sl.blog.domain.Authority;
 import com.sl.blog.domain.User;
+import com.sl.blog.service.IAuthorityService;
 import com.sl.blog.service.IUserService;
 import com.sl.blog.util.ConstraintViolationExceptionHandler;
 import com.sl.blog.vo.Response;
@@ -31,6 +32,9 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IAuthorityService authorityService;
 
     /**
      * 用户列表
@@ -77,9 +81,11 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<Response> create(User user,Long authorityId){
+
+        //权限处理
         List<Authority> authorities = new ArrayList<>();
-        //authorities.add(authorityService.getAuthorityById(authorityId));
-        //user.setAuthorities(authorities);
+        authorities.add(authorityService.getAuthorityById(authorityId));
+        user.setAuthorities(authorities);
 
         if(user.getId()==null){
             //加密密码
