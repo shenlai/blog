@@ -1,6 +1,8 @@
 package com.sl.blog.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -10,7 +12,11 @@ public class User {
     protected User() {
     }
 
+    public User(String name,String email,String username,String password) {
+    }
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 自增长策略
     private  Long id;
 
     private String name;
