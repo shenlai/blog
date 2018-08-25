@@ -16,15 +16,15 @@
                 <h5 class="card-header">
                     <i class="fa fa-bars" aria-hidden="true"></i> 菜单
                 </h5>
-                <!--
+
                 <ul class="list-group blog-menu">
                     <a href="#" class="list-group-item"
                        th:each="item :${model.list}" th:title="${item.name}"
                        th:text="${item.name}" data-th-attr="url=${item.url}"> </a>
                 </ul>
-                -->
-                <!-- 静态测试代码-->
 
+                <!-- 静态测试代码-->
+<!--
             <ul class="list-group">
                 <a href="" class="list-group-item active" title="waylau">
                         用户管理
@@ -39,13 +39,13 @@
                        评论管理
                 </a>
             </ul>
-
+-->
             </div>
         </div>
 
         <!-- 用户列表 -->
         <div class="col-md-8 col-xl-9">
-            <div class="card">
+            <div class="card" id="rightContainer">
                 <div class="card-header bg-dark font-white">
                     <i class="fa fa-sidebar fa-star-o " aria-hidden="true"></i> Users
                     Overview
@@ -114,9 +114,8 @@
 
 </div>
 <!-- /.container -->
-<!--
 <div th:replace="~{fragments/footer :: footer}">...</div>
--->
+
 <!-- JavaScript -->
 <script type="text/javascript"   th:src="@{/js/admins/main.js}" ></script>
 </body>

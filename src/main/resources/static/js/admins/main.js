@@ -4,7 +4,7 @@ $(function() {
 
 	// 搜索
 	$(".blog-menu .list-group-item").click(function() {
-		console($(this).value);
+
 		//移除其他点击样式，添加当前的点击样式
 		$(".blog-menu .list-group-item").removeClass("active");
 		$(this).addClass("active");
