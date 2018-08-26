@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * 安全配置类
  */
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) //启用方法界别安全设置
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -35,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin() //表单登录验证
                 .loginPage("/login").failureUrl("/login-error");
+        http.csrf();// 启用CSRF防护
 
         //super.configure(http);
     }

@@ -5,6 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--嵌入CSRF token-->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN-->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
     <!-- Tether core CSS -->
     <link href="../../css/tether.min.css" th:href="@{/css/tether.min.css}" rel="stylesheet">
@@ -28,8 +32,14 @@
     <!-- bootstrap chosen CSS -->
     <link href="../../css/component-chosen.min.css" th:href="@{/css/component-chosen.min.css}" rel="stylesheet">
 
+    <!-- toastr CSS -->
+    <link href="../../css/toastr.min.css" th:href="@{/css/toastr.min.css}" rel="stylesheet">
+
+    <!-- jQuery image cropping plugin CSS -->
+    <link th:href="@{/css/cropbox.css}" rel="stylesheet" type="text/css">
+
     <!-- Custom styles -->
-    <link href="../../css/style.css" th:href="@{/css/style.css}" rel="stylesheet">
+    <link href="../../css/style.css" th:href="@{/css/style.css}"  rel="stylesheet">
     <link href="../../css/thymeleaf-bootstrap-paginator.css" th:href="@{/css/thymeleaf-bootstrap-paginator.css}"
           rel="stylesheet">
     <link href="../../css/blog.css" th:href="@{/css/blog.css}" rel="stylesheet">
