@@ -22,10 +22,15 @@
         </div>
         <div class="form-group">
             <label for="authorities" class="col-form-label">角色</label>
-            <select id="authorities" name="authorityId" class="form-control form-control-chosen" data-placeholder="请选择">
+            <!--thymeleaf:判断数组方式1 -->
+            <select th:if="${userModel.user.authorities.size()>0}" id="authorities" name="authorityId" class="form-control form-control-chosen" data-placeholder="请选择">
                 <option value="1" data-th-selected="${#strings.contains(userModel.user.authorities[0],'ROLE_ADMIN')}">管理员</option>
                 <option value="2" data-th-selected="${#strings.contains(userModel.user.authorities[0],'ROLE_USER')}">博主</option>
-
+            </select>
+            <!--thymeleaf:判断数组方式2 -->
+            <select th:if="${#lists.size(userModel.user.authorities)}==0" name="authorityId" class="form-control form-control-chosen" data-placeholder="请选择">
+                <option value="1">管理员</option>
+                <option value="2">博主</option>
             </select>
         </div>
     </form>

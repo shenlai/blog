@@ -6,12 +6,15 @@ import com.sl.blog.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements IUserService,UserDetailsService {
 
     @Autowired
     private IUserRepository userRepository;
@@ -43,5 +46,10 @@ public class UserServiceImpl implements IUserService {
         String nameCondition = "%"+name+"%";
         Page<User> users = userRepository.findByNameLike(nameCondition,pageable);
         return users;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username);
     }
 }

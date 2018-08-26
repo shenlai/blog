@@ -9,4 +9,6 @@ public interface IUserRepository extends JpaRepository<User,Long> {
 
 
     Page<User> findByNameLike(String name, Pageable pageable);
+
+    User findByUsername(String username);
 }
