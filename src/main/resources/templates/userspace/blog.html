@@ -62,6 +62,8 @@
                         </div>
                     </div>
                     <button class="btn btn-primary float-right" id="submitComment">发表评论</button>
+                    <button class="btn btn-primary float-right" th:if="${currentVote} == null" id="submitVote">点赞</button>
+                    <button class="btn btn-primary float-right" th:if="${currentVote}" th:attr="voteId=${currentVote.id}" id="cancelVote">取消点赞</button>
                 </div>
                 <!--评论列表-->
                 <div class="card-block" id="mainContainer">
@@ -137,6 +139,7 @@
 <!-- JavaScript -->
 <script th:inline="javascript">
     var blogId = [[${blogModel.id}]];
+    var blogUrl = '/u/' + [[${blogModel.user.username}]] + '/blogs/'+ [[${blogModel.id}]] ;
 </script>
 <script th:src="@{/js/userspace/blog.js}"></script>
 </body>

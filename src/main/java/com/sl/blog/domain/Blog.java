@@ -78,6 +78,11 @@ public class Blog  implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "comment_id", referencedColumnName = "id"))
     private List<Comment> comments;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "blog_vote", joinColumns = @JoinColumn(name = "blog_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "vote_id", referencedColumnName = "id"))
+    private List<Vote> votes;
+
     protected Blog() {
         // TODO Auto-generated constructor stub
     }
@@ -175,6 +180,13 @@ public class Blog  implements Serializable {
         this.comments = comments;
         this.commentSize = this.comments.size();
     }
+    public List<Vote> getVotes() {
+        return votes;
+    }
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+        this.likeSize = this.votes.size();
+    }
 
     /**
      * 添加评论
@@ -186,7 +198,7 @@ public class Blog  implements Serializable {
     }
     /**
      * 删除评论
-     * @param comment
+     * @param commentId
      */
     public void removeComment(Long commentId) {
         for (int index=0; index < this.comments.size(); index ++ ) {
@@ -197,6 +209,43 @@ public class Blog  implements Serializable {
         }
 
         this.commentSize = this.comments.size();
+    }
+
+    /**
+     * 点赞
+     * @param vote
+     * @return
+     */
+    public boolean addVote(Vote vote) {
+        boolean isExist = false;
+        // 判断重复
+        for (int index=0; index < this.votes.size(); index ++ ) {
+            if (this.votes.get(index).getUser().getId() == vote.getUser().getId()) {
+                isExist = true;
+                break;
+            }
+        }
+
+        if (!isExist) {
+            this.votes.add(vote);
+            this.likeSize = this.votes.size();
+        }
+
+        return isExist;
+    }
+    /**
+     * 取消点赞
+     * @param voteId
+     */
+    public void removeVote(Long voteId) {
+        for (int index=0; index < this.votes.size(); index ++ ) {
+            if (this.votes.get(index).getId() == voteId) {
+                this.votes.remove(index);
+                break;
+            }
+        }
+
+        this.likeSize = this.votes.size();
     }
 
 }

@@ -31,4 +31,11 @@ public interface IBlogService {
 
     // 删除评论
     void removeComment(Long blogId, Long commentId);
+
+    //点赞
+    Blog createVote(Long blogId);
+
+
+    //取消点赞
+    void removeVote(Long blogId, Long voteId);
 }

@@ -2,6 +2,7 @@ package com.sl.blog.controller;
 
 import com.sl.blog.domain.Blog;
 import com.sl.blog.domain.User;
+import com.sl.blog.domain.Vote;
 import com.sl.blog.service.IBlogService;
 import com.sl.blog.service.IUserService;
 import com.sl.blog.util.ConstraintViolationExceptionHandler;
@@ -150,20 +151,33 @@ public class UserSpaceController {
      * @return
      */
     @GetMapping("/{username}/blogs/{id}")
-    public String getBlogId(@PathVariable("username") String username,@PathVariable("id") Long id,Model model){
+    public String getBlogById(@PathVariable("username") String username,@PathVariable("id") Long id,Model model){
+        User principal = null;
+        Blog blog = blogService.getBlogById(id);
         //访问量自增
         blogService.readingIncrease(id);
         boolean isBlogOwner = false;
         if(SecurityContextHolder.getContext().getAuthentication()!=null
                 && SecurityContextHolder.getContext().getAuthentication().isAuthenticated()
                 && !SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString().equals("anonymousUser")){
-            User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            principal = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            if(user!=null && username.equals((user.getUsername()))){
+            if(principal!=null && username.equals((principal.getUsername()))){
                 isBlogOwner = true;
             }
-
         }
+        //是否已点赞
+        List<Vote> votes = blog.getVotes();
+        Vote currentVote = null;
+        if(principal!=null){
+            for (Vote vote:votes){
+                if(vote.getUser().getUsername().equals(principal.getUsername())){
+                    currentVote = vote;
+                    break;
+                }
+            }
+        }
+        model.addAttribute("currentVote",currentVote);
         model.addAttribute("isBlogOwner",isBlogOwner);
         model.addAttribute("blogModel",blogService.getBlogById(id));
         return "userspace/blog";
