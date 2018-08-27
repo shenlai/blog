@@ -1,9 +1,11 @@
 package com.sl.blog.controller;
 
 import com.sl.blog.domain.Blog;
+import com.sl.blog.domain.Catalog;
 import com.sl.blog.domain.User;
 import com.sl.blog.domain.Vote;
 import com.sl.blog.service.IBlogService;
+import com.sl.blog.service.ICatalogService;
 import com.sl.blog.service.IUserService;
 import com.sl.blog.util.ConstraintViolationExceptionHandler;
 import com.sl.blog.vo.Response;
@@ -45,6 +47,9 @@ public class UserSpaceController {
 
     @Autowired
     private IBlogService blogService;
+
+    @Autowired
+    private ICatalogService catalogService;
 
     /**
      * 个人设置
@@ -108,7 +113,7 @@ public class UserSpaceController {
     @PreAuthorize("authentication.name.equals(#username)")
     public String listBlogsByOrder(@PathVariable("username") String username,
                                    @RequestParam(value="order",required=false,defaultValue="new") String order,
-                                   @RequestParam(value="category",required=false ) Long category,
+                                   @RequestParam(value="catalog",required=false ) Long catalogId,
                                    @RequestParam(value="keyword",required=false,defaultValue="" ) String keyword,
                                    @RequestParam(value="async",required=false) boolean async,
                                    @RequestParam(value="pageIndex",required=false,defaultValue="0") int pageIndex,
@@ -116,26 +121,20 @@ public class UserSpaceController {
                                    Model model) {
         User  user = (User)userDetailsService.loadUserByUsername(username);
         model.addAttribute("user", user);
-
-        if (category != null) {
-
-            System.out.print("category:" +category );
-            System.out.print("selflink:" + "redirect:/u/"+ username +"/blogs?category="+category);
-            return "/u";
-
-        }
-
         Page<Blog> page = null;
-        if (order.equals("hot")) { // 最热查询
-            Sort sort = new Sort(Sort.Direction.DESC,"reading","comments","likes");
-            Pageable pageable = new PageRequest(pageIndex, pageSize, sort);
-            page = blogService.listBlogsByTitleLikeAndSort(user, keyword, pageable);
-        }
-        if (order.equals("new")) { // 最新查询
+        if (catalogId != null && catalogId > 0) { // 分类查询
+            Catalog catalog = catalogService.getCatalogById(catalogId);
             Pageable pageable = new PageRequest(pageIndex, pageSize);
-            page = blogService.listBlogsByTitleLike(user, keyword, pageable);
+            page = blogService.listBlogsByCatalog(catalog, pageable);
+            order = "";
+        }else if (order.equals("hot")) { // 最热查询
+            Sort sort = new Sort(Sort.Direction.DESC,"readSize","commentSize","voteSize");
+            Pageable pageable = new PageRequest(pageIndex, pageSize, sort);
+            page = blogService.listBlogsByTitleVoteAndSort(user, keyword, pageable);
+        } else if (order.equals("new")) { // 最新查询
+            Pageable pageable = new PageRequest(pageIndex, pageSize);
+            page = blogService.listBlogsByTitleVote(user, keyword, pageable);
         }
-
         List<Blog> list = page.getContent();	// 当前所在页面数据列表
 
         model.addAttribute("order", order);
@@ -189,10 +188,12 @@ public class UserSpaceController {
      * @return
      */
     @GetMapping("/{username}/blogs/edit")
-    public ModelAndView createBlog(Model model){
-        //解析username
-        //编辑权限
-        model.addAttribute("blog",new Blog(null,null,null));
+    public ModelAndView createBlog(@PathVariable("username") String username,Model model){
+        User user = (User)userDetailsService.loadUserByUsername(username);
+        List<Catalog> catalogs = catalogService.listCatalogs(user);
+
+        model.addAttribute("blog", new Blog(null, null, null));
+        model.addAttribute("catalogs", catalogs);
         return new ModelAndView("/userspace/edit","blogModel",model);
     }
 

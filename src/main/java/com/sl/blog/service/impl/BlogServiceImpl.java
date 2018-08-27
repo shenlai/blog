@@ -1,6 +1,7 @@
 package com.sl.blog.service.impl;
 
 import com.sl.blog.domain.Blog;
+import com.sl.blog.domain.Catalog;
 import com.sl.blog.domain.Comment;
 import com.sl.blog.domain.User;
 import com.sl.blog.domain.Vote;
@@ -97,5 +98,29 @@ public class BlogServiceImpl implements IBlogService {
         Blog originalBlog = blogRepository.getOne(blogId);
         originalBlog.removeVote(voteId);
         blogRepository.save(originalBlog);
+    }
+
+    @Override
+    public Page<Blog> listBlogsByCatalog(Catalog catalog, Pageable pageable) {
+        Page<Blog> blogs = blogRepository.findByCatalog(catalog, pageable);
+        return blogs;
+    }
+
+    @Override
+    public Page<Blog> listBlogsByTitleVote(User user, String title, Pageable pageable) {
+        // 模糊查询
+        title = "%" + title + "%";
+        //Page<Blog> blogs = blogRepository.findByUserAndTitleLikeOrderByCreateTimeDesc(user, title, pageable);
+        String tags = title;
+        Page<Blog> blogs = blogRepository.findByTitleLikeAndUserOrTagsLikeAndUserOrderByCreateTimeDesc(title,user, tags,user, pageable);
+        return blogs;
+    }
+
+    @Override
+    public Page<Blog> listBlogsByTitleVoteAndSort(User user, String title, Pageable pageable) {
+        // 模糊查询
+        title = "%" + title + "%";
+        Page<Blog> blogs = blogRepository.findByUserAndTitleLike(user, title, pageable);
+        return blogs;
     }
 }
