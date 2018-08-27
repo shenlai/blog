@@ -11,6 +11,7 @@ public class MainController {
     public String root() {
         return "redirect:/index";
     }
+
     @GetMapping("/index")
     public String index() {
         return "index";

@@ -89,6 +89,12 @@
 			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
 			<version>3.0.2.RELEASE</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/es.nitaur.markdown/txtmark -->
+		<dependency>
+			<groupId>es.nitaur.markdown</groupId>
+			<artifactId>txtmark</artifactId>
+			<version>0.16</version>
+		</dependency>
 
 
 
