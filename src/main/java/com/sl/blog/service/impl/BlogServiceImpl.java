@@ -1,12 +1,14 @@
 package com.sl.blog.service.impl;
 
 import com.sl.blog.domain.Blog;
+import com.sl.blog.domain.Comment;
 import com.sl.blog.domain.User;
 import com.sl.blog.repository.IBlogRepository;
 import com.sl.blog.service.IBlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,5 +56,25 @@ public class BlogServiceImpl implements IBlogService {
         Blog blog = blogRepository.findOne(id);
         blog.setReadSize(blog.getReadSize() + 1);
         blogRepository.save(blog);
+    }
+
+    @Override
+    public Blog createComment(Long blogId, String commentContent) {
+
+        Blog originalBlog = blogRepository.getOne(blogId);
+        User user =(User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Comment comment = new Comment(user,commentContent);
+        originalBlog.addComment(comment);
+
+        return blogRepository.save(originalBlog);
+    }
+
+
+    @Override
+    public void removeComment(Long blogId, Long commentId) {
+        Blog originalBlog = blogRepository.getOne(blogId);
+        originalBlog.removeComment(commentId);
+
+        blogRepository.save(originalBlog);
     }
 }

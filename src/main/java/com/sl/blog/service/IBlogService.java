@@ -25,4 +25,10 @@ public interface IBlogService {
     void readingIncrease(Long id);
 
 
+    // 发表评论
+    Blog createComment(Long blogId, String commentContent);
+
+
+    // 删除评论
+    void removeComment(Long blogId, Long commentId);
 }

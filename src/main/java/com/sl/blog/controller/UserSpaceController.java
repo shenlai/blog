@@ -174,7 +174,7 @@ public class UserSpaceController {
      * @param model
      * @return
      */
-    @GetMapping("/{username}/blogs/edit/")
+    @GetMapping("/{username}/blogs/edit")
     public ModelAndView createBlog(Model model){
         //解析username
         //编辑权限
