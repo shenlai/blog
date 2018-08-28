@@ -19,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @EnableGlobalMethodSecurity(prePostEnabled = true) //启用方法界别安全设置
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String KEY = "blog.com";
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -32,11 +34,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        /*
         http.authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/fonts/**", "/index","/admins","/admins/**").permitAll()  // 都可以访问
                 .and()
                 .formLogin() //表单登录验证
                 .loginPage("/login").failureUrl("/login-error");
+                */
+        http.authorizeRequests().antMatchers("/css/**", "/js/**", "/fonts/**", "/index").permitAll() // 都可以访问
+                .antMatchers("/h2-console/**").permitAll() // 都可以访问
+                .antMatchers("/admins/**").hasRole("ADMIN") // 需要相应的角色才能访问
+                .and()
+                .formLogin()   //基于 Form 表单登录验证
+                .loginPage("/login").failureUrl("/login-error") // 自定义登录界面
+                .and().rememberMe().key(KEY) // 启用 remember me
+                .and().exceptionHandling().accessDeniedPage("/403");  // 处理异常，拒绝访问就重定向到 403 页面
+
         http.csrf();// 启用CSRF防护
 
         //super.configure(http);
