@@ -14,7 +14,8 @@ public class MainController {
 
     @GetMapping("/index")
     public String index() {
-        return "index";
+       // return "index";
+       return "redirect:/blogs";
     }
 
 
@@ -23,4 +24,8 @@ public class MainController {
         return "login";
     }
 
+    @GetMapping("/search")
+    public String search() {
+        return "search";
+    }
 }

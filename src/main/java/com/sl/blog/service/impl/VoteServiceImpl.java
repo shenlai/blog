@@ -19,6 +19,6 @@ public class VoteServiceImpl implements IVoteService {
 
     @Override
     public void removeVote(Long id) {
-        voteRepository.delete(id);
+        voteRepository.deleteById(id);
     }
 }

@@ -6,7 +6,6 @@ import com.sl.blog.service.ICatalogService;
 import com.sl.blog.util.ConstraintViolationExceptionHandler;
 import com.sl.blog.vo.CatalogVO;
 import com.sl.blog.vo.Response;
-import org.apache.log4j.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -26,7 +26,7 @@ public class CatalogServiceImpl implements ICatalogService {
 
     @Override
     public void removeCatalog(Long id) {
-        catalogRepository.delete(id);
+        catalogRepository.deleteById(id);
     }
 
     @Override

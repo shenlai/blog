@@ -29,12 +29,12 @@ public class BlogServiceImpl implements IBlogService {
     @Transactional
     @Override
     public void removeBlog(Long id) {
-        blogRepository.delete(id);
+        blogRepository.deleteById(id);
     }
 
     @Override
     public Blog getBlogById(Long id) {
-        return blogRepository.findOne(id);
+        return blogRepository.getOne(id);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class BlogServiceImpl implements IBlogService {
     @Transactional
     @Override
     public void readingIncrease(Long id) {
-        Blog blog = blogRepository.findOne(id);
+        Blog blog = blogRepository.getOne(id);
         blog.setReadSize(blog.getReadSize() + 1);
         blogRepository.save(blog);
     }

@@ -20,6 +20,6 @@ public class CommentServiceImpl implements ICommentService {
 
     @Override
     public void DeleteComment(Long id) {
-        commentRepository.delete(id);
+        commentRepository.deleteById(id);
     }
 }

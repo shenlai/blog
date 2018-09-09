@@ -15,6 +15,6 @@ public class AuthorityServiceImpl implements IAuthorityService {
 
     @Override
     public Authority getAuthorityById(Long id) {
-        return authorityRepository.findOne(id);
+        return authorityRepository.getOne(id);
     }
 }

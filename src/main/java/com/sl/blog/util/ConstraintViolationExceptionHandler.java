@@ -2,11 +2,9 @@ package com.sl.blog.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-
-import org.apache.commons.lang3.StringUtils;
+import joptsimple.internal.Strings;
 
 
 public class ConstraintViolationExceptionHandler {
@@ -21,7 +19,7 @@ public class ConstraintViolationExceptionHandler {
         for (ConstraintViolation<?> constraintViolation : e.getConstraintViolations()) {
             msgList.add(constraintViolation.getMessage());
         }
-        String messages = StringUtils.join(msgList.toArray(), ";");
+        String messages = Strings.join(msgList, ";");
         return messages;
     }
 
